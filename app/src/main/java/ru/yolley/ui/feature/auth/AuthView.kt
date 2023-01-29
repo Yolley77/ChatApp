@@ -18,11 +18,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.yolley.ui.theme.ChatAppTheme
 @Composable
-internal fun AuthView(authViewModel: AuthViewModel) {
+internal fun AuthView(
+    authViewModel: AuthViewModel,
+    navigateToChat: () -> Unit,
+) {
     AuthView(
         login = authViewModel.userLogin.orEmpty(),
         onSaveLoginChecked = authViewModel::onSaveLoginChecked,
-        onLoginButtonClicked = authViewModel::onLoginButtonClicked,
+        onLoginButtonClicked = {
+            authViewModel.onLoginButtonClicked()
+            navigateToChat.invoke()
+        },
         modifier = Modifier
     )
 }
