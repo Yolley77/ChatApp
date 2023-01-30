@@ -50,9 +50,6 @@ internal fun AuthView(
         OutlinedTextField(
             value = login,
             onValueChange = {},
-            placeholder = {
-                Text(text = "Enter...")
-            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
