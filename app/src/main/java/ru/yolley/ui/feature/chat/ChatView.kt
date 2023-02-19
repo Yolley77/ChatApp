@@ -30,6 +30,13 @@ internal fun ChatView(chatViewModel: ChatViewModel) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun ChatView() {
+
+    val items = listOf(
+       "Message first",
+       "Message second",
+       "Message third",
+    )
+
     Column(
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -39,7 +46,9 @@ internal fun ChatView() {
         LazyColumn(
             modifier = Modifier.fillMaxWidth()
         ) {
-
+            items(items.size) {
+                ChatItem(text = items[it])
+            }
         }
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,

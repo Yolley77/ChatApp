@@ -6,7 +6,9 @@ internal class AppNavigationActions(
     navController: NavController
 ) {
     val navigateToChat: () -> Unit = {
-        navController.navigate(AppScreen.Chat.name)
+        navController.navigate(AppScreen.Chat.name) {
+            launchSingleTop = true
+        }
     }
 
 }

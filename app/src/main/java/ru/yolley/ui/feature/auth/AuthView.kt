@@ -23,8 +23,10 @@ internal fun AuthView(
     navigateToChat: () -> Unit,
 ) {
     AuthView(
-        login = authViewModel.userLogin.orEmpty(),
+        login = authViewModel.userLogin,
+        saveLogin = authViewModel.saveLoginState,
         onSaveLoginChecked = authViewModel::onSaveLoginChecked,
+        onUserLoginChanged = authViewModel::onUserLoginChanged,
         onLoginButtonClicked = {
             authViewModel.onLoginButtonClicked()
             navigateToChat.invoke()
@@ -37,7 +39,9 @@ internal fun AuthView(
 @Composable
 internal fun AuthView(
     login: String,
+    saveLogin: Boolean,
     onSaveLoginChecked: (Boolean) -> Unit,
+    onUserLoginChanged: (String) -> Unit,
     onLoginButtonClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -49,7 +53,7 @@ internal fun AuthView(
     ) {
         OutlinedTextField(
             value = login,
-            onValueChange = {},
+            onValueChange = onUserLoginChanged,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
@@ -63,7 +67,7 @@ internal fun AuthView(
                 .padding(top = 8.dp)
         ) {
             Checkbox(
-                checked = true,
+                checked = saveLogin,
                 onCheckedChange = onSaveLoginChecked,
             )
             Text(text = "Save login")
@@ -87,7 +91,9 @@ fun AuthPreview() {
     ChatAppTheme {
         AuthView(
             login = "login",
+            saveLogin = true,
             onSaveLoginChecked = {},
+            onUserLoginChanged = {},
             onLoginButtonClicked = {},
         )
     }

@@ -2,6 +2,7 @@ package ru.yolley.ui.feature.auth
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -9,15 +10,20 @@ import javax.inject.Inject
 @HiltViewModel
 internal class AuthViewModel @Inject constructor(): ViewModel() {
 
-    val userLogin: String? by mutableStateOf(null)
+    var userLogin: String by mutableStateOf("")
+    var saveLoginState: Boolean by mutableStateOf(false)
+
+    fun onUserLoginChanged(newLogin: String) {
+        userLogin = newLogin
+    }
 
     fun onSaveLoginChecked(checked: Boolean) {
-        if (checked) ""
-        else ""
+        saveLoginState = checked
     }
 
     fun onLoginButtonClicked() {
-        // empty now
+        // repo.sendEnterEvent
+        // enterChat
     }
 
 }

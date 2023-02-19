@@ -5,8 +5,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 
 @Composable
-internal fun ChatItem() {
+internal fun ChatItem(
+    text: String,
+) {
     Card {
-        Text(text = "")
+        Text(text = text)
     }
 }
