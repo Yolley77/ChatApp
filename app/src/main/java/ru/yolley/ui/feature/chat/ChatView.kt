@@ -69,7 +69,8 @@ internal fun ChatView(
         ) {
             OutlinedTextField(
                 value = inputText,
-                onValueChange = onInputChanged,                maxLines = 5,
+                onValueChange = onInputChanged,
+                maxLines = 5,
                 placeholder = {
                     Text(text = "Enter...")
                 },
