@@ -5,7 +5,9 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import ru.yolley.data.IChatRepository
 import ru.yolley.ui.feature.chat.item.ChatTextMessage
 import ru.yolley.ui.feature.chat.item.IChatUIItem
@@ -17,10 +19,20 @@ internal class ChatViewModel @Inject constructor(
     private val chatRepository: IChatRepository,
 ) : ViewModel() {
 
+    init {
+        viewModelScope.launch {
+            chatRepository.messagesFlow.collect {
+                chatItems.add(
+                    ChatTextMessage("out", it, MessageOwner.ANOTHER),
+                )
+            }
+        }
+    }
+
     var chatItems: MutableList<IChatUIItem> = mutableStateListOf(
-            ChatTextMessage("1", "Message first", MessageOwner.SYSTEM),
-            ChatTextMessage("2", "Message second", MessageOwner.USER),
-            ChatTextMessage("3", "Message third", MessageOwner.ANOTHER),
+        ChatTextMessage("1", "Message first", MessageOwner.SYSTEM),
+        ChatTextMessage("2", "Message second", MessageOwner.USER),
+        ChatTextMessage("3", "Message third", MessageOwner.ANOTHER),
     )
 
     var inputText: String by mutableStateOf("")
@@ -32,6 +44,7 @@ internal class ChatViewModel @Inject constructor(
     fun onSendClicked() {
         if (inputText.isEmpty()) return
         chatItems.add(ChatTextMessage("123", inputText, MessageOwner.USER))
+        viewModelScope.launch { chatRepository.sendMessage(inputText) }
         inputText = ""
     }
 
