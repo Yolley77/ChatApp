@@ -30,9 +30,7 @@ internal class ChatViewModel @Inject constructor(
     }
 
     var chatItems: MutableList<IChatUIItem> = mutableStateListOf(
-        ChatTextMessage("1", "Message first", MessageOwner.SYSTEM),
-        ChatTextMessage("2", "Message second", MessageOwner.USER),
-        ChatTextMessage("3", "Message third", MessageOwner.ANOTHER),
+        ChatTextMessage("1", "История сообщений не сохраняется", MessageOwner.SYSTEM),
     )
 
     var inputText: String by mutableStateOf("")
@@ -46,6 +44,10 @@ internal class ChatViewModel @Inject constructor(
         chatItems.add(ChatTextMessage("123", inputText, MessageOwner.USER))
         viewModelScope.launch { chatRepository.sendMessage(inputText) }
         inputText = ""
+    }
+
+    fun onCloseConnection() {
+        viewModelScope.launch { chatRepository.closeConnection() }
     }
 
 }

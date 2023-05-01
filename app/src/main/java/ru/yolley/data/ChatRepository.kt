@@ -28,18 +28,23 @@ class ChatRepository @Inject constructor() : IChatRepository {
             method = HttpMethod.Get,
             //host = "127.0.0.1",
             //host  = "10.0.2.2", // emulator
-
+            //host = "192.168.2.135",
+            host = "77.91.196.***",
             port = 8080,
             path = "/chat"
         )
         session?.run {
-            send("$userLogin connected")
+            send("$userLogin connected!")
             launch {
-                while (true) {
-                    val othersMessage = incoming.receive() as? Frame.Text ?: continue
-                    val message = othersMessage.readText()
-                    messagesFlow.emit(message)
-                    Log.d("DEBUGG", message)
+                try {
+                    for (message in incoming) {
+                        message as? Frame.Text ?: continue
+                        val text = message.readText()
+                        messagesFlow.emit(text)
+                        Log.d("DEBUGG", text)
+                    }
+                } catch (e: Exception) {
+                    println("Error while receiving: " + e.localizedMessage)
                 }
             }
         }
@@ -47,11 +52,17 @@ class ChatRepository @Inject constructor() : IChatRepository {
     }
 
     override suspend fun sendMessage(message: String) {
-        session?.send(message)
+        try {
+            session?.send(message)
+        } catch (e: Exception) {
+            println("Error while sending: " + e.localizedMessage)
+        }
     }
 
-    override fun closeConnection() {
-        client.close()
+    override suspend fun closeConnection() {
+        session?.send("disconnecting...")
+        session?.close()
+        session = null
         Log.d("DEBUGG", "Connection closed. Goodbye!")
     }
 

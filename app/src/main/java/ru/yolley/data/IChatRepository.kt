@@ -8,6 +8,6 @@ interface IChatRepository {
 
     suspend fun openConnection(userLogin: String)
     suspend fun sendMessage(message: String)
-    fun closeConnection()
+    suspend fun closeConnection()
 
 }
