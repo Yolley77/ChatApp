@@ -1,17 +1,13 @@
-package ru.yolley.data
+package ru.yolley.data.remote
 
 import kotlinx.coroutines.flow.SharedFlow
 
-interface IChatRepository {
+internal interface IWebSocketHandler {
 
     val messagesFlow: SharedFlow<String>
 
     suspend fun openConnection(userLogin: String)
     suspend fun sendMessage(message: String)
     suspend fun closeConnection()
-    suspend fun saveLogin(login: String)
-    suspend fun getLogin(): String?
-    suspend fun removeLogin()
-
 
 }

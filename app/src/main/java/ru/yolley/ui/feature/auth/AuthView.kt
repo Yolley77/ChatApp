@@ -53,6 +53,7 @@ internal fun AuthView(
     ) {
         OutlinedTextField(
             value = login,
+            maxLines = 1,
             onValueChange = onUserLoginChanged,
             modifier = Modifier
                 .fillMaxWidth()

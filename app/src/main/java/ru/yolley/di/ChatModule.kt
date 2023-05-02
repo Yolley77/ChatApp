@@ -6,14 +6,26 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import ru.yolley.data.ChatRepository
 import ru.yolley.data.IChatRepository
+import ru.yolley.data.local.IDataStoreFacade
+import ru.yolley.data.local.DataStoreFacade
+import ru.yolley.data.remote.IWebSocketHandler
+import ru.yolley.data.remote.WebSocketHandler
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class ChatModule {
+internal abstract class ChatModule {
 
     @Binds
     @Singleton
     abstract fun bindChatRepository(impl: ChatRepository): IChatRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindWebSocketHandler(impl: WebSocketHandler): IWebSocketHandler
+
+    @Binds
+    @Singleton
+    abstract fun bindPrefsStore(impl: DataStoreFacade): IDataStoreFacade
 
 }

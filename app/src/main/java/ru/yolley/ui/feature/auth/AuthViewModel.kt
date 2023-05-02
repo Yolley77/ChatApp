@@ -18,6 +18,18 @@ internal class AuthViewModel @Inject constructor(
     var userLogin: String by mutableStateOf("")
     var saveLoginState: Boolean by mutableStateOf(false)
 
+    init {
+        viewModelScope.launch {
+            val login = chatRepository.getLogin()
+            if (login.isNullOrEmpty()) {
+                saveLoginState = false
+            } else {
+                userLogin = login
+                saveLoginState = true
+            }
+        }
+    }
+
     fun onUserLoginChanged(newLogin: String) {
         userLogin = newLogin
     }
@@ -29,9 +41,9 @@ internal class AuthViewModel @Inject constructor(
     fun onLoginButtonClicked() {
         viewModelScope.launch {
             chatRepository.openConnection(userLogin)
+            if (saveLoginState) chatRepository.saveLogin(userLogin)
+            else chatRepository.removeLogin()
         }
-        // repo.sendEnterEvent
-        // enterChat
     }
 
 }

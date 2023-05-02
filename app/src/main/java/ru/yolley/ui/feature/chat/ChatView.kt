@@ -2,14 +2,14 @@ package ru.yolley.ui.feature.chat
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -66,47 +66,52 @@ internal fun ChatView(
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
+            .padding(bottom = 4.dp)
             .fillMaxSize()
-            .padding(16.dp)
     ) {
         LazyColumn(
             state = listState,
+            contentPadding = PaddingValues(vertical = 8.dp, horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.Bottom),
             modifier = Modifier
-                .wrapContentSize()
-                .padding(bottom = 8.dp)
+                .weight(1f)
         ) {
             items(items.size) {
                 ChatItem(item = items[it])
             }
         }
         Row(
+            horizontalArrangement = Arrangement.Center,
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(horizontal = 8.dp)
         ) {
             OutlinedTextField(
                 value = inputText,
                 onValueChange = onInputChanged,
-                maxLines = 5,
+                maxLines = 2,
                 placeholder = {
-                    Text(text = "Enter...")
+                    Text(text = "Сообщение...")
                 },
-                modifier = Modifier
-                    .fillMaxWidth(),
-                shape = RoundedCornerShape(10.dp),
+                modifier = Modifier.weight(1f),
+                shape = CircleShape,
                 trailingIcon = {
-                    IconButton(onClick = {
-                        coroutineScope.launch {
-                            listState.animateScrollToItem(index = items.lastIndex)
+                    IconButton(
+                        modifier = Modifier,
+                        onClick = {
+                            coroutineScope.launch {
+                                listState.animateScrollToItem(index = items.lastIndex)
+                            }
+                            keyboardController?.hide()
+                            onSendClicked.invoke()
                         }
-                        keyboardController?.hide()
-                        onSendClicked.invoke()
-                    }) {
+                    ) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_send),
                             contentDescription = "Отправить сообщение"
                         )
                     }
-                },
+                }
             )
 
         }

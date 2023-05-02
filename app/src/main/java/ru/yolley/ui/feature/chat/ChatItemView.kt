@@ -55,7 +55,7 @@ internal fun BoxScope.ChatUserItem(
         colors = CardDefaults.cardColors(Orange),
         modifier = Modifier
             .align(Alignment.CenterEnd)
-            .padding(top = 16.dp)
+            //.padding(top = 16.dp)
             .wrapContentHeight()
             .fillMaxWidth(fraction = 0.8f),
     ) {
@@ -75,7 +75,7 @@ internal fun BoxScope.ChatAnotherItem(
         colors = CardDefaults.cardColors(LightGray),
         modifier = Modifier
             .align(Alignment.CenterStart)
-            .padding(top = 16.dp)
+            //.padding(top = 16.dp)
             .wrapContentHeight()
             .fillMaxWidth(fraction = 0.8f),
     ) {
