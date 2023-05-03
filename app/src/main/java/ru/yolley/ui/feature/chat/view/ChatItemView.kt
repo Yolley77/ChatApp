@@ -13,16 +13,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import ru.yolley.ui.feature.chat.item.ChatTextMessage
-import ru.yolley.ui.feature.chat.item.IChatUIItem
-import ru.yolley.ui.feature.chat.item.MessageOwner
+import ru.yolley.domain.item.ChatTextMessage
+import ru.yolley.domain.item.IChatItem
+import ru.yolley.domain.item.MessageOwner
 import ru.yolley.ui.theme.DirtyWhite
 import ru.yolley.ui.theme.LightGray
 import ru.yolley.ui.theme.Orange
 
 @Composable
 internal fun ChatItem(
-    item: IChatUIItem
+    item: IChatItem
 ) {
     Box(modifier = Modifier.fillMaxWidth()) {
         when {

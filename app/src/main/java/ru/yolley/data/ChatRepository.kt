@@ -3,6 +3,7 @@ package ru.yolley.data
 import kotlinx.coroutines.flow.SharedFlow
 import ru.yolley.data.local.IDataStoreFacade
 import ru.yolley.data.remote.IWebSocketHandler
+import ru.yolley.domain.item.IChatItem
 import javax.inject.Inject
 
 internal class ChatRepository @Inject constructor(
@@ -10,7 +11,7 @@ internal class ChatRepository @Inject constructor(
     private val dataStoreFacade: IDataStoreFacade,
 ) : IChatRepository {
 
-    override val messagesFlow: SharedFlow<String>
+    override val messagesFlow: SharedFlow<IChatItem>
         get() = webSocketHandler.messagesFlow
 
     override suspend fun openConnection(userLogin: String) {

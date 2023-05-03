@@ -1,6 +1,6 @@
-package ru.yolley.ui.feature.chat.item
+package ru.yolley.domain.item
 
-internal interface IChatUIItem {
+internal interface IChatItem {
     val id: String
     val text: String
     val owner: MessageOwner

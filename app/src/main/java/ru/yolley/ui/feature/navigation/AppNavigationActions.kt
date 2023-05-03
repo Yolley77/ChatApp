@@ -11,4 +11,10 @@ internal class AppNavigationActions(
         }
     }
 
+    val navigateToAuth: () -> Unit = {
+        navController.navigate(AppScreen.Auth.name) {
+            launchSingleTop = true
+        }
+    }
+
 }

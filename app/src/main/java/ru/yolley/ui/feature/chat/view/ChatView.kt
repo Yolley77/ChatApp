@@ -1,5 +1,6 @@
 package ru.yolley.ui.feature.chat
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -29,37 +29,48 @@ import androidx.lifecycle.Lifecycle
 import kotlinx.coroutines.launch
 import ru.yolley.R
 import ru.yolley.ui.ComposableLifecycle
-import ru.yolley.ui.feature.chat.item.IChatUIItem
+import ru.yolley.domain.item.IChatItem
 import ru.yolley.ui.theme.ChatAppTheme
 
 @Composable
-internal fun ChatView(chatViewModel: ChatViewModel) {
+internal fun ChatView(
+    chatViewModel: ChatViewModel,
+    navigateBackToAuth: () -> Unit,
+) {
+    
     ChatView(
         items = chatViewModel.chatItems,
         inputText = chatViewModel.inputText,
         onInputChanged = chatViewModel::onInputChanged,
         onSendClicked = chatViewModel::onSendClicked,
         onCloseConnection = chatViewModel::onCloseConnection,
+        navigateToAuth = navigateBackToAuth,
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun ChatView(
-    items: List<IChatUIItem>,
+    items: List<IChatItem>,
     inputText: String,
     onInputChanged: (String) -> Unit,
     onSendClicked: () -> Unit,
     onCloseConnection: () -> Unit,
+    navigateToAuth: () -> Unit,
 ) {
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
     val keyboardController = LocalSoftwareKeyboardController.current
 
     ComposableLifecycle(LocalLifecycleOwner.current) { _, event ->
-        if (event == Lifecycle.Event.ON_STOP) {
+        if (event == Lifecycle.Event.ON_DESTROY) {
             onCloseConnection.invoke()
         }
+    }
+
+    BackHandler {
+        navigateToAuth.invoke()
+        onCloseConnection.invoke()
     }
 
     Column(
@@ -130,6 +141,7 @@ fun ChatPreview() {
             onInputChanged = {},
             onSendClicked = {},
             onCloseConnection = {},
+            navigateToAuth = {},
         )
     }
 }

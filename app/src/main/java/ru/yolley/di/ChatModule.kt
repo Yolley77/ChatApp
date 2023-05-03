@@ -10,6 +10,8 @@ import ru.yolley.data.local.IDataStoreFacade
 import ru.yolley.data.local.DataStoreFacade
 import ru.yolley.data.remote.IWebSocketHandler
 import ru.yolley.data.remote.WebSocketHandler
+import ru.yolley.domain.state.ChatStateHolder
+import ru.yolley.domain.state.IChatStateHolder
 import javax.inject.Singleton
 
 @Module
@@ -26,6 +28,10 @@ internal abstract class ChatModule {
 
     @Binds
     @Singleton
-    abstract fun bindPrefsStore(impl: DataStoreFacade): IDataStoreFacade
+    abstract fun bindDataStoreFacade(impl: DataStoreFacade): IDataStoreFacade
+
+    @Binds
+    @Singleton
+    abstract fun bindChatStateHolder(impl: ChatStateHolder): IChatStateHolder
 
 }

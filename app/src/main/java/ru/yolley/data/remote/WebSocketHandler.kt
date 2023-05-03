@@ -6,9 +6,13 @@ import io.ktor.client.plugins.websocket.*
 import io.ktor.http.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import ru.yolley.domain.item.ChatTextMessage
+import ru.yolley.domain.item.IChatItem
+import ru.yolley.domain.item.MessageOwner
 import javax.inject.Inject
 
 internal class WebSocketHandler @Inject constructor() : IWebSocketHandler {
@@ -19,7 +23,7 @@ internal class WebSocketHandler @Inject constructor() : IWebSocketHandler {
 
     private var session: DefaultClientWebSocketSession? = null
 
-    override var messagesFlow: MutableSharedFlow<String> = MutableSharedFlow()
+    override var messagesFlow: MutableSharedFlow<IChatItem> = MutableSharedFlow()
 
     override suspend fun openConnection(userLogin: String) = withContext(Dispatchers.IO) {
         session = client.webSocketSession(
@@ -32,13 +36,34 @@ internal class WebSocketHandler @Inject constructor() : IWebSocketHandler {
             path = "/chat"
         )
         session?.run {
+            // system
             send("$userLogin connected!")
             launch {
                 try {
                     for (message in incoming) {
                         message as? Frame.Text ?: continue
                         val text = message.readText()
-                        messagesFlow.emit(text)
+                        when  {
+                            !text.startsWith('[') -> {
+                                messagesFlow.emit(
+                                    ChatTextMessage(
+                                        text = text,
+                                        owner = MessageOwner.SYSTEM
+                                    )
+                                )
+                            }
+                            text.startsWith("[$userLogin]") -> {
+                                // delivered
+                            }
+                            else -> {
+                                messagesFlow.emit(
+                                    ChatTextMessage(
+                                        text = text,
+                                        owner = MessageOwner.ANOTHER
+                                    )
+                                )
+                            }
+                        }
                         Log.d("DEBUGG", text)
                     }
                 } catch (e: Exception) {
@@ -58,7 +83,9 @@ internal class WebSocketHandler @Inject constructor() : IWebSocketHandler {
     }
 
     override suspend fun closeConnection() {
+        // system
         session?.send("disconnecting...")
+        delay(500)
         session?.close()
         session = null
         Log.d("DEBUGG", "Connection closed. Goodbye!")

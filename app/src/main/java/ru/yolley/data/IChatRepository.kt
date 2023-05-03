@@ -1,10 +1,11 @@
 package ru.yolley.data
 
 import kotlinx.coroutines.flow.SharedFlow
+import ru.yolley.domain.item.IChatItem
 
-interface IChatRepository {
+internal interface IChatRepository {
 
-    val messagesFlow: SharedFlow<String>
+    val messagesFlow: SharedFlow<IChatItem>
 
     suspend fun openConnection(userLogin: String)
     suspend fun sendMessage(message: String)

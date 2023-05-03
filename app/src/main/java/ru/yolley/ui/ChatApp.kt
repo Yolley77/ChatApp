@@ -40,7 +40,10 @@ fun ChatApp() {
                     )
                 }
                 composable(AppScreen.Chat.name) {
-                    ChatView(chatViewModel = hiltViewModel())
+                    ChatView(
+                        chatViewModel = hiltViewModel(),
+                        navigateBackToAuth = navigationActions.navigateToAuth,
+                    )
                 }
             }
         }
