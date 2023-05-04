@@ -37,7 +37,7 @@ internal class WebSocketHandler @Inject constructor() : IWebSocketHandler {
         )
         session?.run {
             // system
-            send("$userLogin connected!")
+            send(userLogin)
             launch {
                 try {
                     for (message in incoming) {
@@ -84,8 +84,6 @@ internal class WebSocketHandler @Inject constructor() : IWebSocketHandler {
 
     override suspend fun closeConnection() {
         // system
-        session?.send("disconnecting...")
-        delay(500)
         session?.close()
         session = null
         Log.d("DEBUGG", "Connection closed. Goodbye!")
