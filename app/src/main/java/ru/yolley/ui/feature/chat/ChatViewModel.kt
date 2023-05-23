@@ -12,6 +12,7 @@ import ru.yolley.domain.item.ChatTextMessage
 import ru.yolley.domain.item.IChatItem
 import ru.yolley.domain.item.MessageOwner
 import ru.yolley.domain.state.IChatStateHolder
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,7 +32,13 @@ internal class ChatViewModel @Inject constructor(
 
     fun onSendClicked() {
         if (inputText.isEmpty()) return
-        chatStateHolder.chatItems.add(ChatTextMessage("123", inputText, MessageOwner.USER))
+        chatStateHolder.chatItems.add(
+            ChatTextMessage(
+                id = UUID.randomUUID().toString(),
+                text = inputText,
+                owner = MessageOwner.USER
+            )
+        )
         viewModelScope.launch { chatRepository.sendMessage(inputText) }
         inputText = ""
     }

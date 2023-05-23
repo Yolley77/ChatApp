@@ -11,7 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import ru.yolley.ui.feature.auth.AuthView
-import ru.yolley.ui.feature.chat.ChatView
+import ru.yolley.ui.feature.chat.view.ChatView
 import ru.yolley.ui.feature.navigation.AppNavigationActions
 import ru.yolley.ui.feature.navigation.AppScreen
 import ru.yolley.ui.theme.ChatAppTheme

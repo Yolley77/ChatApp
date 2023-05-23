@@ -9,6 +9,7 @@ import ru.yolley.data.IChatRepository
 import ru.yolley.domain.item.ChatTextMessage
 import ru.yolley.domain.item.IChatItem
 import ru.yolley.domain.item.MessageOwner
+import java.util.*
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
@@ -28,7 +29,11 @@ internal class ChatStateHolder @Inject constructor(
     }
 
     override val chatItems: MutableList<IChatItem> = mutableStateListOf(
-        ChatTextMessage("1", "История сообщений не сохраняется", MessageOwner.SYSTEM),
+        ChatTextMessage(
+            id = UUID.randomUUID().toString(),
+            text = "История сообщений не сохраняется",
+            owner = MessageOwner.SYSTEM
+        ),
     )
 
 }

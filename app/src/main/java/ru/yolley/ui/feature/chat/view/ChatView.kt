@@ -1,4 +1,4 @@
-package ru.yolley.ui.feature.chat
+package ru.yolley.ui.feature.chat.view
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
@@ -30,6 +30,7 @@ import kotlinx.coroutines.launch
 import ru.yolley.R
 import ru.yolley.ui.ComposableLifecycle
 import ru.yolley.domain.item.IChatItem
+import ru.yolley.ui.feature.chat.ChatViewModel
 import ru.yolley.ui.theme.ChatAppTheme
 
 @Composable
@@ -37,7 +38,6 @@ internal fun ChatView(
     chatViewModel: ChatViewModel,
     navigateBackToAuth: () -> Unit,
 ) {
-    
     ChatView(
         items = chatViewModel.chatItems,
         inputText = chatViewModel.inputText,

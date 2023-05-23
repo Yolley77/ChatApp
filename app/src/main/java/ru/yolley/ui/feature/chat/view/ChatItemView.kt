@@ -1,4 +1,4 @@
-package ru.yolley.ui.feature.chat
+package ru.yolley.ui.feature.chat.view
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -55,7 +55,6 @@ internal fun BoxScope.ChatUserItem(
         colors = CardDefaults.cardColors(Orange),
         modifier = Modifier
             .align(Alignment.CenterEnd)
-            //.padding(top = 16.dp)
             .wrapContentHeight()
             .fillMaxWidth(fraction = 0.8f),
     ) {
@@ -75,7 +74,6 @@ internal fun BoxScope.ChatAnotherItem(
         colors = CardDefaults.cardColors(LightGray),
         modifier = Modifier
             .align(Alignment.CenterStart)
-            //.padding(top = 16.dp)
             .wrapContentHeight()
             .fillMaxWidth(fraction = 0.8f),
     ) {
